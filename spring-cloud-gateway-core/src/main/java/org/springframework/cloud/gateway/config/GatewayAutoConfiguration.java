@@ -138,6 +138,7 @@ import static org.springframework.cloud.gateway.config.HttpClientProperties.Pool
 import static org.springframework.cloud.gateway.config.HttpClientProperties.Pool.PoolType.FIXED;
 
 /**
+ * Spring Cloud Gateway 核心配置类
  * @author Spencer Gibb
  */
 @Configuration
@@ -152,12 +153,14 @@ public class GatewayAutoConfiguration {
 	@Configuration
 	@ConditionalOnClass(HttpClient.class)
 	protected static class NettyConfiguration {
+		// 创建一个类型为 reactor.ipc.netty.http.client.HttpClient 的 Bean 对象。该 HttpClient 使用 Netty 实现的 Client
 		@Bean
 		@ConditionalOnMissingBean
 		public HttpClient httpClient(@Qualifier("nettyClientOptions") Consumer<? super HttpClientOptions.Builder> options) {
 			return HttpClient.create(options);
 		}
 
+		// 创建一个类型为 java.util.Objects.Consumer 的 Bean 对象
 		@Bean
 		public Consumer<? super HttpClientOptions.Builder> nettyClientOptions(HttpClientProperties properties) {
 			return opts -> {
@@ -234,6 +237,7 @@ public class GatewayAutoConfiguration {
 			return new HttpClientProperties();
 		}
 
+		// 使用 HttpClient Bean ，创建一个类型为 org.springframework.cloud.gateway.filter.NettyRoutingFilter 的 Bean 对象
 		@Bean
 		public NettyRoutingFilter routingFilter(HttpClient httpClient,
 												ObjectProvider<List<HttpHeadersFilter>> headersFilters,
@@ -241,11 +245,13 @@ public class GatewayAutoConfiguration {
 			return new NettyRoutingFilter(httpClient, headersFilters, properties);
 		}
 
+		// 创建一个类型为 org.springframework.cloud.gateway.filter.NettyWriteResponseFilter 的 Bean 对象
 		@Bean
 		public NettyWriteResponseFilter nettyWriteResponseFilter(GatewayProperties properties) {
 			return new NettyWriteResponseFilter(properties.getStreamingMediaTypes());
 		}
 
+		// 创建一个类型为 org.springframework.web.reactive.socket.client.ReactorNettyWebSocketClient 的 Bean 对象，用于下文 WebsocketRoutingFilter 的 Bean 对象创建。
 		@Bean
 		public ReactorNettyWebSocketClient reactorNettyWebSocketClient(@Qualifier("nettyClientOptions") Consumer<? super HttpClientOptions.Builder> options) {
 			return new ReactorNettyWebSocketClient(options);
@@ -364,11 +370,13 @@ public class GatewayAutoConfiguration {
 		return new AdaptCachedBodyGlobalFilter();
 	}
 
+	// 创建一个类型为 RouteToRequestUrlFilter 的 Bean 对象
 	@Bean
 	public RouteToRequestUrlFilter routeToRequestUrlFilter() {
 		return new RouteToRequestUrlFilter();
 	}
 
+	// 创建一个类型为ForwardRoutingFilter的Bean对象
 	@Bean
 	@ConditionalOnBean(DispatcherHandler.class)
 	public ForwardRoutingFilter forwardRoutingFilter(ObjectProvider<DispatcherHandler> dispatcherHandler) {
@@ -380,11 +388,13 @@ public class GatewayAutoConfiguration {
 		return new ForwardPathFilter();
 	}
 
+	// 创建一个类型为WebSocketService的Bean对象
 	@Bean
 	public WebSocketService webSocketService() {
 		return new HandshakeWebSocketService();
 	}
 
+	// 创建一个类型为WebsocketRoutingFilter 的Bean 对象
 	@Bean
 	public WebsocketRoutingFilter websocketRoutingFilter(WebSocketClient webSocketClient,
 														 WebSocketService webSocketService,
@@ -615,6 +625,7 @@ public class GatewayAutoConfiguration {
 	@ConditionalOnClass(Health.class)
 	protected static class GatewayActuatorConfiguration {
 
+		// 创建一个类型为GatewayWebfluxEndpoint 的Bean对象，提供管理网关的HTTP API
 		@Bean
 		@ConditionalOnEnabledEndpoint
 		public GatewayControllerEndpoint gatewayControllerEndpoint(RouteDefinitionLocator routeDefinitionLocator, List<GlobalFilter> globalFilters,

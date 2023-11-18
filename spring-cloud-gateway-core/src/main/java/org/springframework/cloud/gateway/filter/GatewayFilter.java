@@ -22,6 +22,8 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 /**
+ * 用于实现可扩展的切面逻辑，Filter 最终通过 filter chain 来形成链式调用的，每个filter 处理完 per filter 逻辑后委派给 filter chain,filter chain
+ * 再委派给下一个 filter
  * Contract for interception-style, chained processing of Web requests that may
  * be used to implement cross-cutting, application-agnostic requirements such
  * as security, timeouts, and others. Specific to a Gateway

@@ -34,8 +34,14 @@ import static org.springframework.util.StringUtils.tokenizeToStringArray;
  */
 @Validated
 public class PredicateDefinition {
+	/**
+	 * 定义了 Predicate 的名称，它们要符固定的命名规范，为对应的工厂名称。
+	 */
 	@NotNull
 	private String name;
+	/**
+	 *  一个 Map 类型的参数，构造 Predicate 使用到的键值对参数。
+	 */
 	private Map<String, String> args = new LinkedHashMap<>();
 
 	public PredicateDefinition() {

@@ -108,8 +108,7 @@ public class GatewaySampleApplication {
 				)
 				.route(r -> r.path("/image/webp")
 					.filters(f ->
-							f.prefixPath("/httpbin")
-									.addResponseHeader("X-AnotherHeader", "baz"))
+							f.addResponseHeader("X-AnotherHeader", "baz"))
 					.uri(uri)
 				)
 				.route(r -> r.order(-1)
