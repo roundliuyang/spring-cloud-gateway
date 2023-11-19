@@ -26,6 +26,8 @@ import org.springframework.cloud.gateway.support.ShortcutConfigurable;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 
 /**
+ * 职责就是生产 GatewayFilter
+ * 核心方法，用于生产 GatewayFilter，接收一个范型参数 config 。
  * @author Spencer Gibb
  */
 @FunctionalInterface

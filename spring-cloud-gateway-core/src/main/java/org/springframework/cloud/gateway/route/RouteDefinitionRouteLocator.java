@@ -52,6 +52,7 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 
 /**
+ * RouteLocator 最主要的实现类，用于将 RouteDefinition 转换成 Route。
  * {@link RouteLocator} that loads routes from a {@link RouteDefinitionLocator}
  * @author Spencer Gibb
  */
@@ -66,10 +67,10 @@ public class RouteDefinitionRouteLocator implements RouteLocator, BeanFactoryAwa
 	private BeanFactory beanFactory;
 	private ApplicationEventPublisher publisher;
 
-	public RouteDefinitionRouteLocator(RouteDefinitionLocator routeDefinitionLocator,
-									   List<RoutePredicateFactory> predicates,
-									   List<GatewayFilterFactory> gatewayFilterFactories,
-									   GatewayProperties gatewayProperties) {
+	public RouteDefinitionRouteLocator(RouteDefinitionLocator routeDefinitionLocator,        // RouteDefinition Locator，一个 RouteDefinitionLocator 对象。
+									   List<RoutePredicateFactory> predicates,               // Predicate 工厂列表，会被映射成 key 为 name, value 为 factory 的 Map。可以猜想出 gateway 是如何根据 PredicateDefinition 中定义的 name 来匹配到相对应的 factory 了。
+									   List<GatewayFilterFactory> gatewayFilterFactories,    // filter factories，Gateway Filter 工厂列表，同样会被映射成 key 为 name, value 为 factory 的 Map
+									   GatewayProperties gatewayProperties) {                // 外部化配置类
 		this.routeDefinitionLocator = routeDefinitionLocator;
 		initFactories(predicates);
 		gatewayFilterFactories.forEach(factory -> this.gatewayFilterFactories.put(factory.name(), factory));
@@ -104,6 +105,7 @@ public class RouteDefinitionRouteLocator implements RouteLocator, BeanFactoryAwa
 		});
 	}
 
+	// 实现 RouteLocator 的 getRoutes() 方法
 	@Override
 	public Flux<Route> getRoutes() {
 		return this.routeDefinitionLocator.getRouteDefinitions()
@@ -123,6 +125,7 @@ public class RouteDefinitionRouteLocator implements RouteLocator, BeanFactoryAwa
 			}*/
 	}
 
+	// 所调用的方法
 	private Route convertToRoute(RouteDefinition routeDefinition) {
 		AsyncPredicate<ServerWebExchange> predicate = combinePredicates(routeDefinition);
 		List<GatewayFilter> gatewayFilters = getFilters(routeDefinition);

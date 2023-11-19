@@ -20,6 +20,7 @@ package org.springframework.cloud.gateway.route;
 import reactor.core.publisher.Flux;
 
 /**
+ * 从名称上来推断是 Route 的定位器或者说探测器，是用来获取 Route 信息的。
  * @author Spencer Gibb
  */
 //TODO: rename to Routes?
