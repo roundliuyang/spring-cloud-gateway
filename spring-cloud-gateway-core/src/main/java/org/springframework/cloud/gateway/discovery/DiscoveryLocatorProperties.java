@@ -29,7 +29,10 @@ import org.springframework.core.style.ToStringCreator;
 @ConfigurationProperties("spring.cloud.gateway.discovery.locator")
 public class DiscoveryLocatorProperties {
 
-	/** Flag that enables DiscoveryClient gateway integration */
+	/**
+	 *  表示路由的前缀，没有设置时，默认为：ReactiveCompositeDiscoveryClient_
+	 *  Flag that enables DiscoveryClient gateway integration 
+	 */
 	private boolean enabled = false;
 
 	/**

@@ -42,8 +42,14 @@ import org.springframework.util.StringUtils;
 public class DiscoveryClientRouteDefinitionLocator implements RouteDefinitionLocator {
 
 	private final DiscoveryClient discoveryClient;
+	/**
+	 * DiscoveryLocatorProperties 是针对服务发现的相关配置
+	 */
 	private final DiscoveryLocatorProperties properties;
 	private final String routeIdPrefix;
+	/**
+	 * SimpleEvaluationContext 是SPEL表达式的Context
+	 */
 	private final SimpleEvaluationContext evalCtxt;
 
 	public DiscoveryClientRouteDefinitionLocator(DiscoveryClient discoveryClient, DiscoveryLocatorProperties properties) {
