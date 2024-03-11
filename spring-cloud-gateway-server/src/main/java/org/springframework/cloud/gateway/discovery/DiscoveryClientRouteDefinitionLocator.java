@@ -41,6 +41,8 @@ import org.springframework.expression.spel.support.SimpleEvaluationContext;
 import org.springframework.util.StringUtils;
 
 /**
+ * DiscoveryClientRouteDefinitionLocator的主要工作是获取到所有的注册中心上的服务实例，
+ * 根据服务信息创建PredicateDefnition->FilterDefinition->RouteDefinition。
  * TODO: change to RouteLocator? use java dsl
  *
  * @author Spencer Gibb
@@ -60,6 +62,7 @@ public class DiscoveryClientRouteDefinitionLocator implements RouteDefinitionLoc
 	public DiscoveryClientRouteDefinitionLocator(ReactiveDiscoveryClient discoveryClient,
 			DiscoveryLocatorProperties properties) {
 		this(discoveryClient.getClass().getSimpleName(), properties);
+		// 通过对应注册中心的discoveryClient获取到所有的服务实例
 		serviceInstances = discoveryClient.getServices()
 				.flatMap(service -> discoveryClient.getInstances(service).collectList());
 	}

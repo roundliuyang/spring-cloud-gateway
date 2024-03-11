@@ -98,6 +98,7 @@ public class ReactiveLoadBalancerClientFilter implements GlobalFilter, Ordered {
 	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
 		URI url = exchange.getAttribute(GATEWAY_REQUEST_URL_ATTR);
 		String schemePrefix = exchange.getAttribute(GATEWAY_SCHEME_PREFIX_ATTR);
+		// 如果不是lb的请求，则不执行
 		if (url == null || (!"lb".equals(url.getScheme()) && !"lb".equals(schemePrefix))) {
 			return chain.filter(exchange);
 		}
@@ -169,6 +170,9 @@ public class ReactiveLoadBalancerClientFilter implements GlobalFilter, Ordered {
 		return LoadBalancerUriTools.reconstructURI(serviceInstance, original);
 	}
 
+	/**
+	 * 负载均衡取一个实例
+	 */
 	private Mono<Response<ServiceInstance>> choose(Request<RequestDataContext> lbRequest, String serviceId,
 			Set<LoadBalancerLifecycle> supportedLifecycleProcessors) {
 		ReactorLoadBalancer<ServiceInstance> loadBalancer = this.clientFactory.getInstance(serviceId,
